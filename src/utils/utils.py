@@ -16,7 +16,7 @@ def generatePrivateKey(curve_name='secp192r1'):
     """
     curve = reg.get_curve(curve_name)
     privKey = secrets.randbelow(curve.field.n)
-    return privKey
+    return toHex(privKey)
 
 def generatePublicKey(curve_name='secp192r1'):
     """
@@ -27,9 +27,9 @@ def generatePublicKey(curve_name='secp192r1'):
     curve = reg.get_curve(curve_name)
     privKey = secrets.randbelow(curve.field.n)
     pubKey = privKey * curve.g
-    return pubKey
+    return toStandardFormat(pubKey)
 
-def generateKeyPair(curve_name='secp192r1'):
+def generateKeyPair(curve_name='secp192r1') -> object:
     """
     Generates an ECC private and public key in the specified curve.
     :param curve_name: Name of the elliptic curve employed.
@@ -38,7 +38,7 @@ def generateKeyPair(curve_name='secp192r1'):
     curve = reg.get_curve(curve_name)
     privKey = secrets.randbelow(curve.field.n)
     pubKey = privKey * curve.g
-    return privKey, pubKey
+    return toHex(privKey), toStandardFormat(pubKey)
 
 def compressPoint(point, curve_name='secp192r1'):
     """
@@ -47,7 +47,8 @@ def compressPoint(point, curve_name='secp192r1'):
     :param curve_name: Name of the elliptic curve employed.
     :return: EC Point
     """
-    return ec.Point(curve_name, point.x, point.y % 2)
+    curve = reg.get_curve(curve_name)
+    return ec.Point(curve, point.x, point.y % 2)
 
 def decompressPoint(point, curve_name='secp192r1'):
     """
@@ -60,9 +61,9 @@ def decompressPoint(point, curve_name='secp192r1'):
     p = curve.field.p
     y = sqrtmod(pow(point.x, 3, p) + curve.a * point.x + curve.b, p)
     if point.y:
-        return ec.Point(curve_name, point.x, y)
+        return ec.Point(curve, point.x, y)
     else:
-        return ec.Point(curve_name, point.x, p - y)
+        return ec.Point(curve, point.x, p - y)
 
 def toStandardFormat(point, curve_name='secp192r1'):
     """
@@ -71,7 +72,7 @@ def toStandardFormat(point, curve_name='secp192r1'):
     :param curve_name: Name of the elliptic curve employed.
     :return: Standard hex representation of EC point.
     """
-    return '0' + str(2 + point.y % 2) + str(toHex(compressPoint(point, curve_name), True))
+    return '0' + str(2 + point.y % 2) + str(toHex(compressPoint(point, curve_name).x, True))
 
 def toHex(input, remove=False):
     """
@@ -81,7 +82,7 @@ def toHex(input, remove=False):
     :return: An hexadecimal number.
     """
     if remove:
-        return hex(input)[2:]
+        return str(hex(input))[2:]
     else:
         return hex(input)
 

@@ -2,12 +2,11 @@
 import secrets
 
 # Third library imports
-from tinyec import ec
 from tinyec import registry as reg
-import hashlib
 
 # Custom imports
-from .utils import utils
+from src.utils import utils
+
 
 def sign(keys, signer_index, signer_private, message='I voted for Kodos', curve_name='secp192r1'):
     """
@@ -50,7 +49,8 @@ def sign(keys, signer_index, signer_private, message='I voted for Kodos', curve_
 
     return keys, key_image, c[0], random_numbers
 
-def verify(keys, key_image, seed, random_numbers, used_keys=[], message='I voted for Kodos', curve_name='secp192r1'):
+
+def verify(keys, key_image, seed, random_numbers, used_keys=None, message='I voted for Kodos', curve_name='secp192r1'):
     """
 
     :param keys:
@@ -67,16 +67,13 @@ def verify(keys, key_image, seed, random_numbers, used_keys=[], message='I voted
         return False
     # Curve parameters
     curve = reg.get_curve(curve_name)
-    prime_field = curve.field.p
 
     # Ring signature parameters
     n_keys = len(keys)
-    random_numbers = [secrets.randbelow(prime_field) for i in range(n_keys)]
-    alpha = secrets.randbelow(prime_field)
     L = [0] * n_keys
     R = [0] * n_keys
     c = [0] * n_keys
-    c[0] = seed     # Introduce seed
+    c[0] = seed  # Introduce seed
 
     # Compute first element of the signature
     L[0] = random_numbers[0] * curve.G + c[0] * keys[0]
@@ -91,8 +88,5 @@ def verify(keys, key_image, seed, random_numbers, used_keys=[], message='I voted
         c[((i + 1) % n_keys)] = utils.hashToScalar((message, L[i], R[i]), curve_name)
         i = i + 1
 
-    print(i)
-    print(c[i])
     # Compute final
-    return seed == c[i]
-
+    return seed == c[0]
