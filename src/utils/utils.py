@@ -38,17 +38,15 @@ def generateKeyPair(curve_name='secp192r1') -> object:
     curve = reg.get_curve(curve_name)
     privKey = secrets.randbelow(curve.field.n)
     pubKey = privKey * curve.g
-    return toHex(privKey), toStandardFormat(pubKey)
+    return privKey, pubKey
 
-def compressPoint(point, curve_name='secp192r1'):
+def compressPoint(point):
     """
     Takes a EC point/public key in the form (x,y) and returns a compressed point in the form (x, even/odd)
     :param Point point: Point object (tinyec library) of the form (x,y).
-    :param curve_name: Name of the elliptic curve employed.
-    :return: EC Point
+    :return: Tuple containing an EC point in compressed form.
     """
-    curve = reg.get_curve(curve_name)
-    return ec.Point(curve, point.x, point.y % 2)
+    return point.x, point.y % 2
 
 def decompressPoint(point, curve_name='secp192r1'):
     """
@@ -65,14 +63,13 @@ def decompressPoint(point, curve_name='secp192r1'):
     else:
         return ec.Point(curve, point.x, p - y)
 
-def toStandardFormat(point, curve_name='secp192r1'):
+def toStandardFormat(point):
     """
     Takes a public key and returns it in the standard format: compressed, hexed and prefixed with 02 or 03.
     :param point: Point of an elliptic curve.
-    :param curve_name: Name of the elliptic curve employed.
     :return: Standard hex representation of EC point.
     """
-    return '0' + str(2 + point.y % 2) + str(toHex(compressPoint(point, curve_name).x, True))
+    return '0' + str(2 + point.y % 2) + str(toHex(compressPoint(point)[0], True))
 
 def toHex(input, remove=False):
     """
@@ -103,6 +100,8 @@ def hashToScalar(input, curve_name='secp192r1'):
     """
     curve = reg.get_curve(curve_name)
     p = curve.field.p
+    if isinstance(input, str):
+        input = input.encode('utf-8')
     return fromHexToInt(hashlib.sha3_256(input).hexdigest()) % p
 
 def hashToPoint(input, curve_name='secp192r1'):
@@ -113,5 +112,5 @@ def hashToPoint(input, curve_name='secp192r1'):
     :return: A point on the curve.
     """
     curve = reg.get_curve(curve_name)
-    scalar = hashToScalar(input, curve_name)
+    scalar = hashToScalar(str(input), curve_name)
     return scalar * curve.g

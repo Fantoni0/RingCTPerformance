@@ -34,14 +34,14 @@ def sign(keys, signer_index, signer_private, message='I voted for Kodos', curve_
     key_image = signer_private * utils.hashToPoint(keys[signer_index])
     L[signer_index] = alpha * curve.g
     R[signer_index] = alpha * utils.hashToPoint(keys[signer_index])
-    c[(signer_index + 1) % n_keys] = utils.hashToScalar((message, L[signer_index], R[signer_index]), curve_name)
+    c[(signer_index + 1) % n_keys] = utils.hashToScalar(str((message, L[signer_index], R[signer_index])), curve_name)
 
     # Iterate for the rest of elements
     i = (signer_index + 1) % n_keys
     while i != signer_index:
         L[i] = random_numbers[i] * curve.g + c[i] * keys[i]
         R[i] = random_numbers[i] * utils.hashToPoint(keys[i]) + c[i] * key_image
-        c[(i + 1) % n_keys] = utils.hashToScalar((message, L[i], R[i]), curve_name)
+        c[(i + 1) % n_keys] = utils.hashToScalar(str((message, L[i], R[i])), curve_name)
         i = (i + 1) % n_keys
 
     # Close the ring
@@ -76,17 +76,17 @@ def verify(keys, key_image, seed, random_numbers, used_keys=None, message='I vot
     c[0] = seed  # Introduce seed
 
     # Compute first element of the signature
-    L[0] = random_numbers[0] * curve.G + c[0] * keys[0]
-    R[0] = random_numbers[0] * utils.hashToPoint(keys[0]) + c[0]
-    c[1] = utils.hashToScalar((message, L[0], R[0]), curve_name)
+    L[0] = random_numbers[0] * curve.g + c[0] * keys[0]
+    R[0] = random_numbers[0] * utils.hashToPoint(keys[0]) + c[0] * key_image
+    c[1] = utils.hashToScalar(str((message, L[0], R[0])), curve_name)
 
     # Compute the rest of the ring elements
     i = 1
     while i < n_keys:
-        L[0] = random_numbers[i] * curve.G + c[i] * keys[i]
-        R[0] = random_numbers[i] * utils.hashToPoint(keys[i]) + c[i]
-        c[((i + 1) % n_keys)] = utils.hashToScalar((message, L[i], R[i]), curve_name)
+        L[i] = random_numbers[i] * curve.g + c[i] * keys[i]
+        R[i] = random_numbers[i] * utils.hashToPoint(keys[i]) + c[i] * key_image
+        c[((i + 1) % n_keys)] = utils.hashToScalar(str((message, L[i], R[i])), curve_name)
         i = i + 1
 
-    # Compute final
+    # Compute final element
     return seed == c[0]
