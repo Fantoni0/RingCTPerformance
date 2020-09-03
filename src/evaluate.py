@@ -3,6 +3,7 @@ from timeit import default_timer as timer
 
 from src.ringCT import sign, verify
 from src.utils import utils
+from src.plot import plot
 
 def evaluate(args):
     # Define the used keys
@@ -24,20 +25,20 @@ def evaluate(args):
             # Eval signature time
             t0 = timer()
             keys, key_image, seed, randon_numbers = sign(keys, signer, private_keys[signer], args.message, c)
-            sign_time = t0 - timer()
+            sign_time = timer() - t0
             stimes.append(sign_time)
 
             # Eval verify
             t0 = timer()
             verify(keys, key_image, seed, randon_numbers, used_keys, args.message, c)
-            verify_time = t0 - timer()
+            verify_time = timer() - t0
             vtimes.append(verify_time)
 
         total_stimes.append(stimes)
         total_vtimes.append(vtimes)
-    #for b in args.baselines:
-        # OpenSSL is dead
-        # Pyca proposes cryptography
-
-
-
+    # Plot signing times
+    plot(args.ringsizes, 'Ring size', total_stimes, 'Time in seconds',
+         args.curves, 'Time spent to craft a signature', 'SigningTimes')
+    # Plot verification times
+    plot(args.ringsizes, 'Ring size', total_vtimes, 'Time in seconds',
+         args.curves, 'Time spent to verify a signature', 'VerificationTimes')

@@ -1,8 +1,12 @@
-# Ring Condifential Transaction Signatures Performance Analysis
+# Ring Confidential Transaction Signatures Performance Analysis
 Python implementation of the ring confidential transaction signatures used in [Monero](https://github.com/monero-project/monero).
 More details about RingCT can bew found [here](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) on chapter 6.
 
 We present a framework to analyze and compare the performance of ringCT against other well-known cryptographic primitives.
+
+:warning: This is a repository for research purposes. Cryptography is a pretty sensible issue and only reputed and tested sources should be used in a production environment. Use at your own risk!
+
+:warning: Also bear in mind that Monero is a huge and dynamic open source project subjected to changes. The signatures here implemented might change in the future.
 
 ## Installation
 
