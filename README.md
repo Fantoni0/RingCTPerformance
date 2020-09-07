@@ -1,6 +1,6 @@
 # Ring Confidential Transaction Signatures Performance Analysis
 Python implementation of the ring confidential transaction signatures used in [Monero](https://github.com/monero-project/monero).
-More details about RingCT can bew found [here](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) on chapter 6.
+More details about RingCT can be found [here](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) on chapter 6.
 
 We present a framework to analyze and compare the performance of ringCT using different elliptic curves.
 
