@@ -11,11 +11,11 @@ from src.utils import utils
 def sign(keys, signer_index, signer_private, message='I voted for Kodos', curve_name='secp192r1'):
     """
 
-    :param keys:
-    :param signer_index:
-    :param signer_private:
-    :param message:
-    :param curve_name:
+    :param keys: List of public keys used in the signature.
+    :param signer_index: Index of the real signer in the public keys
+    :param signer_private: Signer's private key.
+    :param message: Message to sign.
+    :param curve_name: Name of the elliptic curve employed.
     :return:
     """
     # Curve parameters
@@ -53,13 +53,13 @@ def sign(keys, signer_index, signer_private, message='I voted for Kodos', curve_
 def verify(keys, key_image, seed, random_numbers, used_keys=None, message='I voted for Kodos', curve_name='secp192r1'):
     """
 
-    :param keys:
-    :param key_image:
-    :param seed:
-    :param random_numbers:
-    :param used_keys:
-    :param message:
-    :param curve_name:
+    :param keys:  List of public keys used in the signature.
+    :param key_image: Key Image of the signer's private key.
+    :param seed: Initial seed of the ring.
+    :param random_numbers: List of random numbers employed in the signature.
+    :param used_keys: Keys used in previous signatures.
+    :param message: Message to sign.
+    :param curve_name: Name of the elliptic curve employed.
     :return:
     """
     # If the key_image was already used the signature is not valid

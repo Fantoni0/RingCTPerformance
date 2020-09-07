@@ -1,20 +1,29 @@
+# Standard library imports
 import secrets
 from timeit import default_timer as timer
 
+# Custom imports
 from src.ringCT import sign, verify
 from src.utils import utils
 from src.plot import plot
 
+
 def evaluate(args):
-    # Define the used keys
-    max_size = max(args.ringsizes)
-    pair_keys = [utils.generateKeyPair() for i in range(max_size)]
-    public_keys = [pair_keys[i][1] for i in range(len(pair_keys))]
-    private_keys = [pair_keys[i][0] for i in range(len(pair_keys))]
+    """
+    Evaluates the performance of ring signatures (sign and verify algorithms) under
+    the different parameters provided in args.
+    :param args: Object containing the parameters such as ring size, curves to evaluate
+    :return:
+    """
 
     total_stimes = []
     total_vtimes = []
     for c in args.curves:
+        # Define the used keys
+        max_size = max(args.ringsizes)
+        pair_keys = [utils.generateKeyPair(c) for i in range(max_size)]
+        public_keys = [pair_keys[i][1] for i in range(len(pair_keys))]
+        private_keys = [pair_keys[i][0] for i in range(len(pair_keys))]
         used_keys = []
         stimes = []
         vtimes = []
@@ -38,7 +47,7 @@ def evaluate(args):
         total_vtimes.append(vtimes)
     # Plot signing times
     plot(args.ringsizes, 'Ring size', total_stimes, 'Time in seconds',
-         args.curves, 'Time spent to craft a signature', 'SigningTimes')
+         args.curves, 'Time to craft a signature', 'graph', save_csv=True)
     # Plot verification times
     plot(args.ringsizes, 'Ring size', total_vtimes, 'Time in seconds',
-         args.curves, 'Time spent to verify a signature', 'VerificationTimes')
+         args.curves, 'Time to verify a signature', 'graph', save_csv=True)

@@ -1,12 +1,12 @@
 # Standard library imports
 import secrets
-# Third library imports
 import hashlib
+
+# Third library imports
 from tinyec import ec
 from tinyec import registry as reg
 from nummaster.basic import sqrtmod
 
-# Custom imports
 
 def generatePrivateKey(curve_name='secp192r1'):
     """
@@ -17,6 +17,7 @@ def generatePrivateKey(curve_name='secp192r1'):
     curve = reg.get_curve(curve_name)
     privKey = secrets.randbelow(curve.field.n)
     return toHex(privKey)
+
 
 def generatePublicKey(curve_name='secp192r1'):
     """
@@ -29,6 +30,7 @@ def generatePublicKey(curve_name='secp192r1'):
     pubKey = privKey * curve.g
     return toStandardFormat(pubKey)
 
+
 def generateKeyPair(curve_name='secp192r1') -> object:
     """
     Generates an ECC private and public key in the specified curve.
@@ -40,6 +42,7 @@ def generateKeyPair(curve_name='secp192r1') -> object:
     pubKey = privKey * curve.g
     return privKey, pubKey
 
+
 def compressPoint(point):
     """
     Takes a EC point/public key in the form (x,y) and returns a compressed point in the form (x, even/odd)
@@ -47,6 +50,7 @@ def compressPoint(point):
     :return: Tuple containing an EC point in compressed form.
     """
     return point.x, point.y % 2
+
 
 def decompressPoint(point, curve_name='secp192r1'):
     """
@@ -63,6 +67,7 @@ def decompressPoint(point, curve_name='secp192r1'):
     else:
         return ec.Point(curve, point.x, p - y)
 
+
 def toStandardFormat(point):
     """
     Takes a public key and returns it in the standard format: compressed, hexed and prefixed with 02 or 03.
@@ -70,6 +75,7 @@ def toStandardFormat(point):
     :return: Standard hex representation of EC point.
     """
     return '0' + str(2 + point.y % 2) + str(toHex(compressPoint(point)[0], True))
+
 
 def toHex(input, remove=False):
     """
@@ -83,6 +89,7 @@ def toHex(input, remove=False):
     else:
         return hex(input)
 
+
 def fromHexToInt(input):
     """
     Transforms hexadecimal to decimal.
@@ -90,6 +97,7 @@ def fromHexToInt(input):
     :return: An integer in base 10.
     """
     return int(input, base=16)
+
 
 def hashToScalar(input, curve_name='secp192r1'):
     """
@@ -103,6 +111,7 @@ def hashToScalar(input, curve_name='secp192r1'):
     if isinstance(input, str):
         input = input.encode('utf-8')
     return fromHexToInt(hashlib.sha3_256(input).hexdigest()) % p
+
 
 def hashToPoint(input, curve_name='secp192r1'):
     """

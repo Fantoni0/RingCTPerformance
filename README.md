@@ -2,20 +2,40 @@
 Python implementation of the ring confidential transaction signatures used in [Monero](https://github.com/monero-project/monero).
 More details about RingCT can bew found [here](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) on chapter 6.
 
-We present a framework to analyze and compare the performance of ringCT against other well-known cryptographic primitives.
+We present a framework to analyze and compare the performance of ringCT using different elliptic curves.
 
 :warning: This is a repository for research purposes. Cryptography is a pretty sensible issue and only reputed and tested sources should be used in a production environment. Use at your own risk!
 
 :warning: Also bear in mind that Monero is a huge and dynamic open source project subjected to changes. The signatures here implemented might change in the future.
 
+:information_source: The presented results were obtained using a Ryzen 7 3700X processor on Linux :penguin:. Times might change in different environments.
+
 ## Installation
+Assuming that you have pip installed: 
+```
+git clone https://github.com/Fantoni0/RingCTPerformance
+cd RingCTPerformance
+pip install -r requirements.txt
+```
 
 ### Requirements
+The library has minimal requirements. All of them are included in requirement.txt.
+Following the installation process solves the dependencies.
+- `tinyec` for EC math.
+- `nummaster` for modular square root.
+- `matplotlib` for plotting the results.
 
 ## Usage
-
+An example of how to use the library:
+```
+python main.py -rs 8 16 32 64\ 
+ -c brainpoolP160r1 secp192r1 secp224r1 secp256r1\
+ -m 'I voted for Kodos'\ 
+ -o comparative
+```
+If you want to experiment with single ring signatures, you can do so in `test_RingCT.ipynb`.  
 ## Resources
-
+Multiple ring signature algorithms exist and they might be confusing at first. Here are some pointers we found useful: 
 * [Zero To Monero 2nd Edition](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) - Great technical review of Monero
 * [Mastering Monero](https://masteringmonero.com/free-download.html) - A complete guide about Monero and its ecosystem.
 * Seminal and relevant papers about ring signatures.
