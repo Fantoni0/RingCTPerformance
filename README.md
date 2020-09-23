@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ```
 
 ### Requirements
-The library has minimal requirements. All of them are included in requirement.txt.
+The library has minimal requirements. All of them are included in requirements.txt.
 Following the installation process solves the dependencies.
 - `tinyec` for EC math.
 - `nummaster` for modular square root.
@@ -49,21 +49,6 @@ Multiple ring signature algorithms exist and they might be confusing at first. H
 
 ## Citation
 This repository is part of a research carried out by [ALFA](https://alfa.webs.upv.es/) research group.
-
-If you use this code on your research, please cite:
-```
-@article{monero-voting:2020,
- journal = {Informatica},
- title = {{Distributed Trust, a Blockchain Election Scheme}},
- author = {Aleix Cerd\`{a} i Cuc\'{o}, Antonio M. Larriba, Jos\'{e} M. Sempere and Dami\'{a}n L\'{o}pez},
- year = {2020},
- volume = {XXX},
- pages = {XXX--XXX},
- doi = {},
- issn = {},
- url = {}
-}
-```        
 
  
 
