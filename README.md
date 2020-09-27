@@ -3,12 +3,13 @@ Python implementation of the ring confidential transaction signatures used in [M
 More details about RingCT can be found [here](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) on chapter 6.
 
 We present a framework to analyze and compare the performance of ringCT using different elliptic curves.
+The code is parallelized using `joblib` and it tries to run as many signatures in parallel as cpu cores available. 
 
 :warning: This is a repository for research purposes. Cryptography is a pretty sensible issue and only reputed and tested sources should be used in a production environment. Use at your own risk!
 
 :warning: Also bear in mind that Monero is a huge and dynamic open source project subjected to changes. The signatures here implemented might change in the future.
 
-:information_source: The presented results were obtained using a Ryzen 7 3700X processor on Linux :penguin:. Times might change in different environments.
+:information_source: The presented results were obtained using a Ryzen 7 3700X (16 cores) processor on Linux :penguin:. Times might change in different environments.
 
 ## Installation
 Assuming that you have pip installed: 
@@ -24,6 +25,7 @@ Following the installation process solves the dependencies.
 - `tinyec` for EC math.
 - `nummaster` for modular square root.
 - `matplotlib` for plotting the results.
+- `joblib` for parallelization.
 
 ## Usage
 An example of how to use the library:
@@ -33,7 +35,8 @@ python main.py -rs 8 16 32 64\
  -m 'I voted for Kodos'\ 
  -o comparative
 ```
-If you want to experiment with single ring signatures, you can do so in `test_RingCT.ipynb`.  
+If you want to experiment with single ring signatures, you can do so in `test_RingCT.ipynb`.
+  
 ## Resources
 Multiple ring signature algorithms exist and they might be confusing at first. Here are some pointers we found useful: 
 * [Zero To Monero 2nd Edition](https://web.getmonero.org/library/Zero-to-Monero-2-0-0.pdf) - Great technical review of Monero
@@ -44,8 +47,6 @@ Multiple ring signature algorithms exist and they might be confusing at first. H
     * [Cryptonote Section 4](https://cryptonote.org/whitepaper.pdf) - Nicolas van Saberhagen - 2013
     * [Ring signature efficiency](https://bitcointalk.org/index.php?topic=972541.msg10619684#msg10619684) - Adam Black - 2015
     * Ring confidential transactions for Monero [[1]](https://www.researchgate.net/publication/311865049_Ring_Confidential_Transactions) [[2]](https://eprint.iacr.org/2015/1098.pdf) - Shen Noether and Adam Mackenzie - 2015
-
- 
 
 ## Citation
 This repository is part of a research carried out by [ALFA](https://alfa.webs.upv.es/) research group.
