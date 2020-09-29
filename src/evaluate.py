@@ -72,7 +72,7 @@ def evaluate(args):
             signer = secrets.randbelow(rs)
 
             # Simulate signatures and verifications
-            it = num_cpus  # Number of signatures crafted/verified in parallel
+            it = 64  # Number of signatures crafted/verified in parallel
             parameters = keys, signer, private_keys[signer], args.message, c
             signatures = [None for _ in range(it)]
 
