@@ -49,7 +49,20 @@ Multiple ring signature algorithms exist and they might be confusing at first. H
     * Ring confidential transactions for Monero [[1]](https://www.researchgate.net/publication/311865049_Ring_Confidential_Transactions) [[2]](https://eprint.iacr.org/2015/1098.pdf) - Shen Noether and Adam Mackenzie - 2015
 
 ## Citation
-This repository is part of a research carried out by [ALFA](https://alfa.webs.upv.es/) research group.
+This repository is part of a research article carried out by [ALFA](https://alfa.webs.upv.es/) research group. If you use it, please cite:
+```
+@article{larriba2021distributed,
+  title={Distributed Trust, a Blockchain Election Scheme},
+  author={Larriba, Antonio M and Cerd{\`a} i Cuc{\'o}, Aleix and Sempere, Jos{\'e} M and L{\'o}pez, Dami{\'a}n},
+  journal={Informatica},
+  volume={32},
+  number={2},
+  pages={321--355},
+  year={2021},
+  publisher={Vilnius University Institute of Data Science and Digital Technologies}
+}
+```
+
 
  
 
